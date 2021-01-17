@@ -1,0 +1,616 @@
+﻿@model IEnumerable<ConventionWebSite.Models.Convention>
+
+@{
+    ViewBag.Title = "Liste des conventions";
+}
+
+@if (User.IsInRole("Student"))
+{
+    <button class="btn btn-danger btn-sm"><a href="~/Conventions/Create"><font color="white">Demander une conventions</font></a></button><br /><br />
+
+}
+
+
+@if (User.IsInRole("Admin"))
+{
+    <div class="box box-danger">
+        <div class="box-header with-border">
+            <h3 class="box-title">Conventions à traiter</h3>
+        </div>
+        <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.State == "En cours de traitement")
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Student.Firstname) @Html.DisplayFor(modelItem => item.Student.Lastname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanieName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RequestDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.State)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Modifier", "Edit", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Détails", "Details", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Supprimer", "Delete", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Approuver", "Approve", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Rejeter", "Reject", new { id = item.ConventionId }, new { onclick = "return confirm('Voulez-vous vraiment rejeter cette convention ?');" })
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <br /><br />
+
+    <div class="box box-danger">
+        <div class="box-header with-border">
+            <h3 class="box-title">Conventions approuvées</h3>
+        </div>
+        <div class="box-body">
+            <table id="example11" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            Nom d'administrateur
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Date d'acceptation
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.State == "Approuvée")
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Student.Firstname) @Html.DisplayFor(modelItem => item.Student.Lastname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Employee.Firstname) @Html.DisplayFor(modelItem => item.Employee.Lastname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanieName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RequestDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AcceptanceDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.State)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Modifier", "Edit", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Détails", "Details", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Supprimer", "Delete", new { id = item.ConventionId }) |
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            Nom d'administrateur
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Date d'acceptation
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div> <br /><br />
+
+    <div class="box box-danger">
+        <div class="box-header with-border">
+            <h3 class="box-title">Conventions Rejetées</h3>
+        </div>
+        <div class="box-body">
+            <table id="example111" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            Nom d'administrateur
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.State == "Rejetée")
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Student.Firstname) @Html.DisplayFor(modelItem => item.Student.Lastname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Employee.Firstname) @Html.DisplayFor(modelItem => item.Employee.Lastname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanieName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RequestDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.State)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Modifier", "Edit", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Détails", "Details", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Supprimer", "Delete", new { id = item.ConventionId }) |
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            Nom d'administrateur
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+}
+
+
+@if (User.IsInRole("Student"))
+{
+    <div class="box box-danger">
+        <div class="box-header with-border">
+            <h3 class="box-title">Mes conventions approuvées</h3>
+        </div>
+        <div class="box-body">
+            <table id="example1111" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            Nom d'administrateur
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Date d'acceptation
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.State == "Approuvée" && item.Student.Email == @User.Identity.Name)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Student.Firstname) @Html.DisplayFor(modelItem => item.Student.Lastname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Employee.Firstname) @Html.DisplayFor(modelItem => item.Employee.Lastname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanieName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RequestDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.AcceptanceDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.State)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Modifier", "Edit", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Détails", "Details", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Supprimer", "Delete", new { id = item.ConventionId }) |
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            Nom d'administrateur
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Date d'acceptation
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <br /><br />
+
+    <div class="box box-danger">
+        <div class="box-header with-border">
+            <h3 class="box-title">Mes conventions (En attente)</h3>
+        </div>
+        <div class="box-body">
+            <table id="example11111" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.State == "En cours de traitement" && item.Student.Email == @User.Identity.Name)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Student.Firstname) @Html.DisplayFor(modelItem => item.Student.Lastname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanieName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RequestDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.State)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Modifier", "Edit", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Détails", "Details", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Supprimer", "Delete", new { id = item.ConventionId }) |
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <br /><br />
+
+    <div class="box box-danger">
+        <div class="box-header with-border">
+            <h3 class="box-title">Mes conventions rejetées</h3>
+        </div>
+        <div class="box-body">
+            <table id="example111111" class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            Nom d'administrateur
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Date d'acceptation
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.State == "Rejetée" && item.Student.Email == @User.Identity.Name)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Student.Firstname) @Html.DisplayFor(modelItem => item.Student.Lastname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Employee.Firstname) @Html.DisplayFor(modelItem => item.Employee.Lastname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanieName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EndDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RequestDate)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.State)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Modifier", "Edit", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Détails", "Details", new { id = item.ConventionId }) |
+                                    @Html.ActionLink("Supprimer", "Delete", new { id = item.ConventionId }) |
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>
+                            Nom d'étudiant
+                        </th>
+                        <th>
+                            Nom d'administrateur
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CompanieName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th>
+                            Date de demande
+                        </th>
+                        <th>
+                            Etat de convention
+                        </th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <br /><br />
+}

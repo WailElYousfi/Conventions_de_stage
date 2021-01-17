@@ -1,3 +1,12 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    if (User.Identity.IsAuthenticated)
+    {
+        Layout = "~/Views/Shared/_Layout_4.cshtml";
+
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout_Login.cshtml";
+
+    }
 }
